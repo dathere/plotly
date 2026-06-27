@@ -12,21 +12,25 @@ use crate::private::NumOrString;
 #[derive(Serialize, Clone, Debug)]
 #[serde(rename_all = "kebab-case")]
 pub enum MapStyle {
+    Basic,
     #[serde(rename = "carto-darkmatter")]
     CartoDarkMatter,
+    #[serde(rename = "carto-darkmatter-nolabels")]
+    CartoDarkMatterNoLabels,
     CartoPositron,
-    OpenStreetMap,
-    StamenTerrain,
-    StamenToner,
-    StamenWatercolor,
-    WhiteBg,
-    Basic,
-    Streets,
-    Outdoors,
-    Light,
+    #[serde(rename = "carto-positron-nolabels")]
+    CartoPositronNoLabels,
+    CartoVoyager,
+    #[serde(rename = "carto-voyager-nolabels")]
+    CartoVoyagerNoLabels,
     Dark,
+    Light,
+    OpenStreetMap,
+    Outdoors,
     Satellite,
     SatelliteStreets,
+    Streets,
+    WhiteBg,
 }
 
 /// Sets the bounds beyond which the `map` subplot cannot be panned.
@@ -85,12 +89,15 @@ mod tests {
     #[test]
     #[rustfmt::skip]
     fn serialize_map_style() {
-        assert_eq!(to_value(MapStyle::CartoDarkMatter).unwrap(), json!("carto-darkmatter"));
-        assert_eq!(to_value(MapStyle::CartoPositron).unwrap(), json!("carto-positron"));
-        assert_eq!(to_value(MapStyle::OpenStreetMap).unwrap(), json!("open-street-map"));
-        assert_eq!(to_value(MapStyle::StamenTerrain).unwrap(), json!("stamen-terrain"));
-        assert_eq!(to_value(MapStyle::WhiteBg).unwrap(), json!("white-bg"));
         assert_eq!(to_value(MapStyle::Basic).unwrap(), json!("basic"));
+        assert_eq!(to_value(MapStyle::CartoDarkMatter).unwrap(), json!("carto-darkmatter"));
+        assert_eq!(to_value(MapStyle::CartoDarkMatterNoLabels).unwrap(), json!("carto-darkmatter-nolabels"));
+        assert_eq!(to_value(MapStyle::CartoPositron).unwrap(), json!("carto-positron"));
+        assert_eq!(to_value(MapStyle::CartoPositronNoLabels).unwrap(), json!("carto-positron-nolabels"));
+        assert_eq!(to_value(MapStyle::CartoVoyager).unwrap(), json!("carto-voyager"));
+        assert_eq!(to_value(MapStyle::CartoVoyagerNoLabels).unwrap(), json!("carto-voyager-nolabels"));
+        assert_eq!(to_value(MapStyle::OpenStreetMap).unwrap(), json!("open-street-map"));
+        assert_eq!(to_value(MapStyle::WhiteBg).unwrap(), json!("white-bg"));
         assert_eq!(to_value(MapStyle::Satellite).unwrap(), json!("satellite"));
         assert_eq!(to_value(MapStyle::SatelliteStreets).unwrap(), json!("satellite-streets"));
     }
