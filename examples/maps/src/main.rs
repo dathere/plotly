@@ -1,10 +1,15 @@
 #![allow(dead_code)]
 
 use plotly::{
+    choropleth::{LocationMode, Marker as ChoroplethMarker},
     color::Rgb,
-    common::{Line, Marker, Mode},
-    layout::{Axis, Center, DragMode, LayoutGeo, Mapbox, MapboxStyle, Projection, Rotation},
-    Configuration, DensityMapbox, Layout, Plot, ScatterGeo, ScatterMapbox,
+    common::{ColorBar, ColorScale, ColorScalePalette, Line, Marker, Mode},
+    layout::{
+        Axis, Center, DragMode, LayoutGeo, LayoutMap, MapStyle, Mapbox, MapboxStyle, Projection,
+        Rotation,
+    },
+    Choropleth, ChoroplethMap, Configuration, DensityMapbox, Layout, Plot, ScatterGeo,
+    ScatterMapbox,
 };
 use plotly_utils::write_example_to_html;
 
@@ -152,9 +157,78 @@ fn density_mapbox(show: bool, file_name: &str) {
     }
 }
 
+/// Classic choropleth on the `geo` subplot, coloring countries by value using
+/// ISO-3 country codes.
+// ANCHOR: choropleth
+fn choropleth(show: bool, file_name: &str) {
+    let trace = Choropleth::new(
+        vec![
+            "USA", "CAN", "MEX", "BRA", "ARG", "FRA", "DEU", "CHN", "IND", "AUS",
+        ],
+        vec![10.0, 8.0, 6.0, 7.0, 4.0, 9.0, 9.5, 12.0, 11.0, 5.0],
+    )
+    .location_mode(LocationMode::Iso3)
+    .color_scale(ColorScale::Palette(ColorScalePalette::Viridis))
+    .color_bar(ColorBar::new().title("Score"))
+    .marker(ChoroplethMarker::new().line(Line::new().width(0.5).color(Rgb::new(80, 80, 80))));
+
+    let layout = Layout::new()
+        .drag_mode(DragMode::Zoom)
+        .geo(LayoutGeo::new().showcountries(true).showland(true));
+
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+    plot.set_layout(layout);
+    plot.set_configuration(Configuration::default().responsive(true).fill_frame(true));
+
+    let path = write_example_to_html(&plot, file_name);
+    if show {
+        plot.show_html(path);
+    }
+}
+// ANCHOR_END: choropleth
+
+/// Choropleth on the MapLibre `map` subplot. Regions are matched against a
+/// GeoJSON feature collection (referenced here by URL) via `feature_id_key`.
+// ANCHOR: choropleth_map
+fn choropleth_map(show: bool, file_name: &str) {
+    let geojson_url =
+        "https://raw.githubusercontent.com/python-visualization/folium/main/tests/us-states.json";
+
+    let trace = ChoroplethMap::new(
+        vec!["AL", "AK", "AZ", "CA", "NY", "TX"],
+        vec![1.0, 2.0, 3.0, 4.0, 5.0, 6.0],
+    )
+    .geojson(serde_json::json!(geojson_url))
+    .feature_id_key("id")
+    .color_scale(ColorScale::Palette(ColorScalePalette::Bluered))
+    .show_scale(true)
+    .marker(ChoroplethMarker::new().opacity(0.7));
+
+    let layout = Layout::new().drag_mode(DragMode::Zoom).map(
+        LayoutMap::new()
+            .style(MapStyle::CartoPositron)
+            .center(Center::new(38.0, -96.0))
+            .zoom(3.0),
+    );
+
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+    plot.set_layout(layout);
+    plot.set_configuration(Configuration::default().responsive(true).fill_frame(true));
+
+    let path = write_example_to_html(&plot, file_name);
+    if show {
+        plot.show_html(path);
+    }
+}
+// ANCHOR_END: choropleth_map
+
 fn main() {
     // Change false to true on any of these lines to display the example.
     scatter_mapbox(false, "scatter_mapbox");
     scatter_geo(false, "scatter_geo");
     density_mapbox(false, "density_mapbox");
+    choropleth(false, "choropleth");
+    choropleth_map(false, "choropleth_map");
 }

@@ -11,6 +11,7 @@ https://github.com/plotly/plotly.rs/pull/350
 
 - [[#NNN](https://github.com/plotly/plotly.rs/pull/NNN)] Add `Treemap` trace type, with `Tiling`/`PathBar` helpers, a dedicated `treemap::Marker` (`pad`/`corner_radius`/`depth_fade`), and `treemapcolorway`/`extendtreemapcolors` layout options
 - [[#NNN](https://github.com/plotly/plotly.rs/pull/NNN)] Add `Sunburst` trace type
+- [[#NNN](https://github.com/plotly/plotly.rs/pull/NNN)] Add `Choropleth` (geo subplot) and `ChoroplethMap` (MapLibre `map` subplot) trace types, with a `LocationMode` enum and a dedicated `choropleth::Marker`; add the MapLibre `map` subplot via `LayoutMap`/`MapStyle`/`MapBounds`
 - [[#407](https://github.com/plotly/plotly.rs/issues/407)] Expose plotly.js 3.1–3.6 attributes:
   - `Layout`: `hoversort`, `hoveranywhere`, `clickanywhere`
   - `Axis`: `zerolinelayer` (`ZeroLineLayer`), `minorloglabels`, `modebardisable` (`ModeBarDisable`), `ticklabelposition` (`TickLabelPosition`), `unifiedhovertitle` (`UnifiedHoverTitle`), and `ExponentFormat::SIExtended`
