@@ -5,20 +5,36 @@ use crate::color::Color;
 use crate::layout::{Axis, Center, Projection};
 
 /// Determines how a `geo` subplot's view is auto-computed to fit the plotted
-/// data. Omitting it (the default) is equivalent to Plotly's `false` — the
-/// configured center/projection/axes are used as-is.
-#[derive(Serialize, Clone, Debug, PartialEq, Eq)]
-#[serde(rename_all = "lowercase")]
+/// data. The default is [`GeoFitBounds::False`] (equivalent to Plotly's
+/// `false`), which uses the configured center/projection/axes as-is.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum GeoFitBounds {
+    /// Equivalent to Plotly's `false`: use the configured
+    /// center/projection/axes as-is. Serializes as the boolean `false`, so it
+    /// can override a non-default value coming from a template or a previously
+    /// composed layout.
+    False,
     /// Frame the subplot to the union of the traces' location geometries.
     Locations,
     /// Frame the subplot to the bounds of the traces' GeoJSON.
-    #[serde(rename = "geojson")]
     GeoJson,
 }
 
-#[derive(Serialize, Clone, Debug, FieldSetter)]
+impl Serialize for GeoFitBounds {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::False => serializer.serialize_bool(false),
+            Self::Locations => serializer.serialize_str("locations"),
+            Self::GeoJson => serializer.serialize_str("geojson"),
+        }
+    }
+}
 
+#[serde_with::skip_serializing_none]
+#[derive(Serialize, Clone, Debug, FieldSetter)]
 pub struct LayoutGeo {
     /// Sets the latitude and longitude of the center of the map.
     center: Option<Center>,
@@ -116,5 +132,9 @@ mod tests {
         let geo = LayoutGeo::new().fitbounds(GeoFitBounds::Locations);
         assert_eq!(to_value(geo).unwrap(), json!({ "fitbounds": "locations" }));
         assert_eq!(to_value(GeoFitBounds::GeoJson).unwrap(), json!("geojson"));
+        assert_eq!(to_value(GeoFitBounds::False).unwrap(), json!(false));
+
+        let geo = LayoutGeo::new().fitbounds(GeoFitBounds::False);
+        assert_eq!(to_value(geo).unwrap(), json!({ "fitbounds": false }));
     }
 }
