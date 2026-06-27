@@ -54,11 +54,24 @@ fn scatter_geo(show: bool, file_name: &str) {
         }
     };
     let mut rdr = csv::Reader::from_reader(req.as_bytes());
-    let headers = rdr.headers().unwrap().clone();
+    let headers = match rdr.headers() {
+        Ok(headers) => headers.clone(),
+        Err(err) => {
+            eprintln!("warning: skipping scatter_geo example; failed to read CSV headers: {err}");
+            return;
+        }
+    };
     let mut rows = vec![];
     for result in rdr.records() {
-        let record = result.unwrap();
-        rows.push(record);
+        match result {
+            Ok(record) => rows.push(record),
+            Err(err) => {
+                eprintln!(
+                    "warning: skipping scatter_geo example; failed to parse CSV record: {err}"
+                );
+                return;
+            }
+        }
     }
 
     // Color scale
@@ -80,23 +93,26 @@ fn scatter_geo(show: bool, file_name: &str) {
     for i in 0..scl.len() {
         let lat_head = format!("lat-{}", i + 1);
         let lon_head = format!("lon-{}", i + 1);
+        let (lat_idx, lon_idx) = match (
+            headers.iter().position(|h| h == lat_head),
+            headers.iter().position(|h| h == lon_head),
+        ) {
+            (Some(lat_idx), Some(lon_idx)) => (lat_idx, lon_idx),
+            _ => {
+                eprintln!(
+                    "warning: skipping scatter_geo example; missing expected columns \
+                     {lat_head}/{lon_head}"
+                );
+                return;
+            }
+        };
         let lat: Vec<f64> = rows
             .iter()
-            .map(|row| {
-                row.get(headers.iter().position(|h| h == lat_head).unwrap())
-                    .unwrap()
-                    .parse()
-                    .unwrap_or(f64::NAN)
-            })
+            .map(|row| row.get(lat_idx).unwrap_or("").parse().unwrap_or(f64::NAN))
             .collect();
         let lon: Vec<f64> = rows
             .iter()
-            .map(|row| {
-                row.get(headers.iter().position(|h| h == lon_head).unwrap())
-                    .unwrap()
-                    .parse()
-                    .unwrap_or(f64::NAN)
-            })
+            .map(|row| row.get(lon_idx).unwrap_or("").parse().unwrap_or(f64::NAN))
             .collect();
         all_lats.push(lat);
         all_lons.push(lon);
