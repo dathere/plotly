@@ -1,7 +1,7 @@
 use std::borrow::Cow;
 
-use plotly_derive::layout_structs;
 use plotly_derive::FieldSetter;
+use plotly_derive::layout_structs;
 use serde::Serialize;
 use update_menu::UpdateMenu;
 
@@ -38,7 +38,7 @@ pub use self::axis::{
     SelectorButton, SelectorStep, SliderRangeMode, SpikeMode, SpikeSnap, StepMode,
     TickLabelPosition, TicksDirection, TicksPosition, UnifiedHoverTitle, ZeroLineLayer,
 };
-pub use self::geo::LayoutGeo;
+pub use self::geo::{GeoFitBounds, LayoutGeo};
 pub use self::grid::{GridDomain, GridPattern, GridXSide, GridYSide, LayoutGrid, RowOrder};
 pub use self::legend::{GroupClick, ItemClick, ItemSizing, Legend, TraceOrder};
 pub use self::map::{LayoutMap, MapBounds, MapStyle};

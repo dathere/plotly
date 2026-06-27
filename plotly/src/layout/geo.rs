@@ -4,6 +4,19 @@ use serde::Serialize;
 use crate::color::Color;
 use crate::layout::{Axis, Center, Projection};
 
+/// Determines how a `geo` subplot's view is auto-computed to fit the plotted
+/// data. Omitting it (the default) is equivalent to Plotly's `false` — the
+/// configured center/projection/axes are used as-is.
+#[derive(Serialize, Clone, Debug, PartialEq, Eq)]
+#[serde(rename_all = "lowercase")]
+pub enum GeoFitBounds {
+    /// Frame the subplot to the union of the traces' location geometries.
+    Locations,
+    /// Frame the subplot to the bounds of the traces' GeoJSON.
+    #[serde(rename = "geojson")]
+    GeoJson,
+}
+
 #[derive(Serialize, Clone, Debug, FieldSetter)]
 
 pub struct LayoutGeo {
@@ -35,6 +48,11 @@ pub struct LayoutGeo {
     lonaxis: Option<Axis>,
     /// Configures the latitude axis
     lataxis: Option<Axis>,
+    /// Auto-frames the subplot to the plotted data (e.g. `Locations` fits the
+    /// view to the trace's filled region geometries). Overrides
+    /// `center`/`lonaxis`/`lataxis` ranges when set.
+    #[serde(rename = "fitbounds")]
+    fitbounds: Option<GeoFitBounds>,
     // Sets the coastline stroke width (in px).
     #[field_setter(default = "Some(1)")]
     coastlinewidth: Option<u8>,
@@ -91,5 +109,12 @@ mod tests {
             "coastlinewidth": 2
         });
         assert_eq!(to_value(geo).unwrap(), expected);
+    }
+
+    #[test]
+    fn serialize_geo_fitbounds() {
+        let geo = LayoutGeo::new().fitbounds(GeoFitBounds::Locations);
+        assert_eq!(to_value(geo).unwrap(), json!({ "fitbounds": "locations" }));
+        assert_eq!(to_value(GeoFitBounds::GeoJson).unwrap(), json!("geojson"));
     }
 }
