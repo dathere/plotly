@@ -40,9 +40,19 @@ fn scatter_geo(show: bool, file_name: &str) {
     use csv;
     use reqwest;
 
-    // Download and parse the CSV
+    // Download and parse the CSV. If the fetch fails (e.g. no network during a
+    // book/CI build), warn and skip this example rather than panicking.
     let url = "https://raw.githubusercontent.com/plotly/datasets/master/globe_contours.csv";
-    let req = reqwest::blocking::get(url).unwrap().text().unwrap();
+    let req = match reqwest::blocking::get(url)
+        .and_then(|resp| resp.error_for_status())
+        .and_then(|resp| resp.text())
+    {
+        Ok(body) => body,
+        Err(err) => {
+            eprintln!("warning: skipping scatter_geo example; failed to fetch {url}: {err}");
+            return;
+        }
+    };
     let mut rdr = csv::Reader::from_reader(req.as_bytes());
     let headers = rdr.headers().unwrap().clone();
     let mut rows = vec![];
