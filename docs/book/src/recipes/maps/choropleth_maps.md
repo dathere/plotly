@@ -26,9 +26,9 @@ use plotly::{
 };
 ```
 
-> The map examples are not built into this book automatically because they fetch
-> remote data / basemap tiles at render time. To view them, run
-> `cargo run` inside `examples/maps` (set the `show` argument to `true`).
+The `to_inline_html` method is used to produce the html plots displayed in this
+page. The rendered maps require an internet connection (the MapLibre basemap and,
+for the second example, the remote GeoJSON are fetched in the browser).
 
 ## Choropleth on a geo subplot
 
@@ -36,8 +36,12 @@ use plotly::{
 {{#include ../../../../../examples/maps/src/main.rs:choropleth}}
 ```
 
+{{#include ../../../../../examples/maps/output/inline_choropleth.html}}
+
 ## Choropleth on a MapLibre map subplot
 
 ```rust,no_run
 {{#include ../../../../../examples/maps/src/main.rs:choropleth_map}}
 ```
+
+{{#include ../../../../../examples/maps/output/inline_choropleth_map.html}}
