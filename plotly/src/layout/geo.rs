@@ -35,7 +35,8 @@ impl Serialize for GeoFitBounds {
 
 /// Sets the resolution of the base layers. Higher detail (smaller scale
 /// denominator) means more accurate coastlines and borders at the cost of a
-/// larger payload. The default is [`GeoResolution::OneOverOneHundredTenMillion`].
+/// larger payload. The default is
+/// [`GeoResolution::OneOverOneHundredTenMillion`].
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum GeoResolution {
     /// 1:110,000,000 scale (lower detail, default). Serializes as `110`.
@@ -67,6 +68,8 @@ pub struct LayoutGeo {
     /// Sets the projection of the map
     #[field_setter(default = "Projection::new().projection_type(ProjectionType::Orthographic)")]
     projection: Option<Projection>,
+    /// Sets the background color of the subplot.
+    bgcolor: Option<Box<dyn Color>>,
     /// If to show the ocean or not
     #[field_setter(default = "Some(true)")]
     showocean: Option<bool>,
@@ -123,6 +126,7 @@ mod tests {
                     .projection_type(ProjectionType::Mercator)
                     .rotation(Rotation::new().lat(1.0).lon(2.0).roll(4.0)),
             )
+            .bgcolor(Rgb::new(17, 17, 17))
             .showocean(true)
             .oceancolor(Rgb::new(0, 255, 255))
             .showland(true)
@@ -139,6 +143,7 @@ mod tests {
             "center": {"lat": 10.0, "lon": 20.0},
             "zoom": 5,
             "projection": {"type": "mercator", "rotation": {"lat": 1.0, "lon": 2.0, "roll": 4.0}},
+            "bgcolor": "rgb(17, 17, 17)",
             "showocean": true,
             "oceancolor": "rgb(0, 255, 255)",
             "showland": true,
@@ -171,7 +176,10 @@ mod tests {
             to_value(GeoResolution::OneOverOneHundredTenMillion).unwrap(),
             json!(110)
         );
-        assert_eq!(to_value(GeoResolution::OneOverFiftyMillion).unwrap(), json!(50));
+        assert_eq!(
+            to_value(GeoResolution::OneOverFiftyMillion).unwrap(),
+            json!(50)
+        );
 
         let geo = LayoutGeo::new().resolution(GeoResolution::OneOverOneHundredTenMillion);
         assert_eq!(to_value(geo).unwrap(), json!({ "resolution": 110 }));
