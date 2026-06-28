@@ -86,6 +86,13 @@ pub struct LayoutGeo {
     lakecolor: Option<Box<dyn Color>>,
     /// If to show countries (borders) or not
     showcountries: Option<bool>,
+    /// Sets the scope of the basemap to a geographic region. Accepted values:
+    /// `"world"`, `"usa"`, `"europe"`, `"asia"`, `"africa"`,
+    /// `"north america"`, `"south america"`. Default is `"world"`.
+    /// Setting `"usa"` restricts the basemap (land, country borders) to the
+    /// United States, preventing neighbouring land (e.g. British Columbia)
+    /// from bleeding into the albers-usa composite projection canvas.
+    scope: Option<String>,
     /// Sets the resolution of the base layers (coastlines, land, borders).
     resolution: Option<GeoResolution>,
     /// Configures the longitude axis
