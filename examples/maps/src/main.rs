@@ -5,8 +5,8 @@ use plotly::{
     color::Rgb,
     common::{ColorBar, ColorScale, ColorScalePalette, Line, Marker, Mode},
     layout::{
-        Axis, Center, DragMode, LayoutGeo, LayoutMap, MapStyle, Mapbox, MapboxStyle, Projection,
-        Rotation,
+        Axis, Center, DragMode, GeoResolution, LayoutGeo, LayoutMap, MapStyle, Mapbox, MapboxStyle,
+        Projection, Rotation,
     },
     Choropleth, ChoroplethMap, Configuration, DensityMapbox, Layout, Plot, ScatterGeo,
     ScatterMapbox,
@@ -200,7 +200,12 @@ fn choropleth(show: bool, file_name: &str) {
 
     let layout = Layout::new()
         .drag_mode(DragMode::Zoom)
-        .geo(LayoutGeo::new().showcountries(true).showland(true));
+        .geo(
+            LayoutGeo::new()
+                .showcountries(true)
+                .showland(true)
+                .resolution(GeoResolution::OneOverFiftyMillion),
+        );
 
     let mut plot = Plot::new();
     plot.add_trace(trace);
