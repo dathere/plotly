@@ -33,6 +33,29 @@ impl Serialize for GeoFitBounds {
     }
 }
 
+/// Sets the resolution of the base layers. Higher detail (smaller scale
+/// denominator) means more accurate coastlines and borders at the cost of a
+/// larger payload. The default is [`GeoResolution::OneOverOneHundredTenMillion`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum GeoResolution {
+    /// 1:110,000,000 scale (lower detail, default). Serializes as `110`.
+    OneOverOneHundredTenMillion,
+    /// 1:50,000,000 scale (higher detail). Serializes as `50`.
+    OneOverFiftyMillion,
+}
+
+impl Serialize for GeoResolution {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        match self {
+            Self::OneOverOneHundredTenMillion => serializer.serialize_u16(110),
+            Self::OneOverFiftyMillion => serializer.serialize_u16(50),
+        }
+    }
+}
+
 #[serde_with::skip_serializing_none]
 #[derive(Serialize, Clone, Debug, FieldSetter)]
 pub struct LayoutGeo {
@@ -60,6 +83,8 @@ pub struct LayoutGeo {
     lakecolor: Option<Box<dyn Color>>,
     /// If to show countries (borders) or not
     showcountries: Option<bool>,
+    /// Sets the resolution of the base layers (coastlines, land, borders).
+    resolution: Option<GeoResolution>,
     /// Configures the longitude axis
     lonaxis: Option<Axis>,
     /// Configures the latitude axis
@@ -105,6 +130,7 @@ mod tests {
             .showlakes(false)
             .lakecolor(Rgb::new(50, 50, 200))
             .showcountries(true)
+            .resolution(GeoResolution::OneOverFiftyMillion)
             .lonaxis(Axis::new().title("Longitude"))
             .lataxis(Axis::new().title("Latitude"))
             .coastlinewidth(2);
@@ -120,6 +146,7 @@ mod tests {
             "showlakes": false,
             "lakecolor": "rgb(50, 50, 200)",
             "showcountries": true,
+            "resolution": 50,
             "lataxis": { "title": { "text": "Latitude" } },
             "lonaxis": { "title": { "text": "Longitude" } },
             "coastlinewidth": 2
@@ -136,5 +163,17 @@ mod tests {
 
         let geo = LayoutGeo::new().fitbounds(GeoFitBounds::False);
         assert_eq!(to_value(geo).unwrap(), json!({ "fitbounds": false }));
+    }
+
+    #[test]
+    fn serialize_geo_resolution() {
+        assert_eq!(
+            to_value(GeoResolution::OneOverOneHundredTenMillion).unwrap(),
+            json!(110)
+        );
+        assert_eq!(to_value(GeoResolution::OneOverFiftyMillion).unwrap(), json!(50));
+
+        let geo = LayoutGeo::new().resolution(GeoResolution::OneOverOneHundredTenMillion);
+        assert_eq!(to_value(geo).unwrap(), json!({ "resolution": 110 }));
     }
 }
