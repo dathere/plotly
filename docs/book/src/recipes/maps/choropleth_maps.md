@@ -21,7 +21,7 @@ use plotly::{
     choropleth::{LocationMode, Marker as ChoroplethMarker},
     color::Rgb,
     common::{ColorBar, ColorScale, ColorScalePalette, Line},
-    layout::{Center, DragMode, LayoutGeo, LayoutMap, MapStyle},
+    layout::{Center, DragMode, GeoResolution, LayoutGeo, LayoutMap, MapStyle},
     Choropleth, ChoroplethMap, Configuration, Layout, Plot,
 };
 ```
