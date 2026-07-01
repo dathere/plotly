@@ -3,6 +3,8 @@
 pub mod bar;
 pub mod box_plot;
 mod candlestick;
+pub mod choropleth;
+pub mod choropleth_map;
 pub mod contour;
 mod density_mapbox;
 pub mod heat_map;
@@ -25,6 +27,8 @@ pub mod treemap;
 pub use bar::Bar;
 pub use box_plot::BoxPlot;
 pub use candlestick::Candlestick;
+pub use choropleth::Choropleth;
+pub use choropleth_map::ChoroplethMap;
 pub use contour::Contour;
 pub use density_mapbox::DensityMapbox;
 pub use heat_map::HeatMap;
