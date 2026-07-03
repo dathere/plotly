@@ -234,6 +234,7 @@ pub enum PlotType {
     Sunburst,
     Choropleth,
     ChoroplethMap,
+    Violin,
 }
 
 #[derive(Serialize, Clone, Debug)]

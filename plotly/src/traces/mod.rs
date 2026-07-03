@@ -23,6 +23,7 @@ pub mod sunburst;
 pub mod surface;
 pub mod table;
 pub mod treemap;
+pub mod violin;
 
 pub use bar::Bar;
 pub use box_plot::BoxPlot;
@@ -46,5 +47,6 @@ pub use sunburst::Sunburst;
 pub use surface::Surface;
 pub use table::Table;
 pub use treemap::Treemap;
+pub use violin::Violin;
 
 pub use self::image::Image;
