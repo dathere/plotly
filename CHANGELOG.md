@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Added
 
+- [[#XXX](https://github.com/plotly/plotly.rs/pull/XXX)] Add hover (`hovertext`/`hoverinfo`/`hovertemplate`/`customdata`/`hoverlabel`/`text`) and color-scale (`colorscale`/`colorbar`/`showscale`/`reversescale`/`autocolorscale`/`coloraxis`) support, plus `ids`/`meta`/`uirevision`/`below`, to `DensityMapbox`
 - [[#406](https://github.com/plotly/plotly.rs/issues/406)] Expose `plotly.js` 3.1–3.6 attributes
 
 ### Changed
