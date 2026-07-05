@@ -8,11 +8,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Added
 
 - [[#412](https://github.com/plotly/plotly.rs/pull/412)] Add `Violin` trace type with box, mean line, KDE span, and split/grouped support
-- [[#XXX](https://github.com/plotly/plotly.rs/pull/XXX)] Add hover (`hovertext`/`hoverinfo`/`hovertemplate`/`customdata`/`hoverlabel`/`text`) and color-scale (`colorscale`/`colorbar`/`showscale`/`reversescale`/`autocolorscale`/`coloraxis`) support, plus `ids`/`meta`/`uirevision`/`below`, to `DensityMapbox`
+- [[#413](https://github.com/plotly/plotly.rs/issues/413)] Add hover (`hovertext`/`hoverinfo`/`hovertemplate`/`customdata`/`hoverlabel`/`text`) and color-scale (`colorscale`/`colorbar`/`showscale`/`reversescale`/`autocolorscale`/`coloraxis`) support, plus `ids`/`meta`/`uirevision`/`below`, to `DensityMapbox`
 - [[#406](https://github.com/plotly/plotly.rs/issues/406)] Expose `plotly.js` 3.1–3.6 attributes
 - [[#410](https://github.com/plotly/plotly.rs/pull/410)] Add `Choropleth` (geo subplot) and `ChoroplethMap` (MapLibre `map` subplot) trace types, with a `LocationMode` enum and a dedicated `choropleth::Marker`; add the MapLibre `map` subplot via `LayoutMap`/`MapStyle`/`MapBounds`
 - [[#410](https://github.com/plotly/plotly.rs/pull/410)] Add `LayoutGeo` options: `fitbounds` (`GeoFitBounds`), `resolution` (`GeoResolution`, 1:110M/1:50M base-layer detail), and `bgcolor`
-- [[#XXX](https://github.com/plotly/plotly.rs/pull/XXX)] Add `DensityMap` (MapLibre `map` subplot) trace type — density heatmaps with full color-scale and hover support
+- [[#414](https://github.com/plotly/plotly.rs/issues/414)] Add `DensityMap` (MapLibre `map` subplot) trace type — density heatmaps with full color-scale and hover support
 
 ### Changed
 
