@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - [[#410](https://github.com/plotly/plotly.rs/pull/410)] Add `LayoutGeo` options: `fitbounds` (`GeoFitBounds`), `resolution` (`GeoResolution`, 1:110M/1:50M base-layer detail), and `bgcolor`
 - [[#414](https://github.com/plotly/plotly.rs/issues/414)] Add `DensityMap` (MapLibre `map` subplot) trace type — density heatmaps with full color-scale and hover support
 - Add `ScatterMap` (MapLibre `map` subplot) trace type — the modern counterpart to `ScatterMapbox`, with markers/lines, `Fill`/`Selection`, and full hover support
+- Add native point clustering to `ScatterMap` via a `Cluster` option (`enabled`/`color`/`maxzoom`/`opacity`/`size`/`step`) — a `scattermap`-only feature with no `ScatterMapbox` equivalent
 
 ### Changed
 
