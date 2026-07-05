@@ -212,6 +212,7 @@ pub enum PlotType {
     ScatterGL,
     Scatter3D,
     ScatterMapbox,
+    ScatterMap,
     ScatterGeo,
     ScatterPolar,
     ScatterPolarGL,
@@ -228,12 +229,14 @@ pub enum PlotType {
     Sankey,
     Surface,
     DensityMapbox,
+    DensityMap,
     Table,
     Pie,
     Treemap,
     Sunburst,
     Choropleth,
     ChoroplethMap,
+    Violin,
 }
 
 #[derive(Serialize, Clone, Debug)]
