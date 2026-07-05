@@ -228,6 +228,7 @@ pub enum PlotType {
     Sankey,
     Surface,
     DensityMapbox,
+    DensityMap,
     Table,
     Pie,
     Treemap,
