@@ -18,7 +18,8 @@ use plotly::{
         Align as TableAlign, Cells, Fill as TableFill, Font as TableFont, Header, Line as TableLine,
     },
     treemap::{BranchValues, Marker as TreemapMarker, Packing, PathBar, Side, Tiling},
-    Bar, Pie, Plot, Sankey, Scatter, ScatterPolar, Sunburst, Table, Treemap,
+    waterfall::{Marker as WaterfallMarker, Measure, MeasureStyle},
+    Bar, Pie, Plot, Sankey, Scatter, ScatterPolar, Sunburst, Table, Treemap, Waterfall,
 };
 use plotly_utils::write_example_to_html;
 use rand_distr::{Distribution, Normal, Uniform};
@@ -1147,6 +1148,47 @@ fn styled_sunburst(show: bool, file_name: &str) {
 }
 // ANCHOR_END: styled_sunburst
 
+// Waterfall Charts
+// ANCHOR: basic_waterfall
+fn basic_waterfall(show: bool, file_name: &str) {
+    // `Absolute` starts a running total, `Relative` adds a signed delta to it,
+    // and `Total` draws the running total so far -- the value supplied for a
+    // `Total` bar is ignored, but the slot must still be present because the
+    // label, value and measure arrays are read positionally.
+    let labels = vec![
+        "Opening balance",
+        "Sales",
+        "Refunds",
+        "Net revenue",
+        "Operating costs",
+        "Closing balance",
+    ];
+    let values = vec![120.0, 80.0, -15.0, 0.0, -45.0, 0.0];
+
+    let trace = Waterfall::new(labels, values)
+        .measure(vec![
+            Measure::Absolute,
+            Measure::Relative,
+            Measure::Relative,
+            Measure::Total,
+            Measure::Relative,
+            Measure::Total,
+        ])
+        .text_info("delta")
+        .increasing(MeasureStyle::new().marker(WaterfallMarker::new().color(NamedColor::SeaGreen)))
+        .decreasing(MeasureStyle::new().marker(WaterfallMarker::new().color(NamedColor::IndianRed)))
+        .totals(MeasureStyle::new().marker(WaterfallMarker::new().color(NamedColor::SteelBlue)));
+
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+
+    let path = write_example_to_html(&plot, file_name);
+    if show {
+        plot.show_html(path);
+    }
+}
+// ANCHOR_END: basic_waterfall
+
 // ANCHOR: set_lower_or_upper_bound_on_axis
 fn set_lower_or_upper_bound_on_axis(show: bool, file_name: &str) {
     use std::fs::File;
@@ -1311,6 +1353,9 @@ fn main() {
     // Sunburst Charts
     basic_sunburst(false, "basic_sunburst");
     styled_sunburst(false, "styled_sunburst");
+
+    // Waterfall Charts
+    basic_waterfall(false, "basic_waterfall");
 
     // Set Lower or Upper Bound on Axis
     set_lower_or_upper_bound_on_axis(false, "set_lower_or_upper_bound_on_axis");

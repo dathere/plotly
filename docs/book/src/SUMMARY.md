@@ -18,6 +18,7 @@
         - [Sankey Diagrams](./recipes/basic_charts/sankey_diagrams.md)
         - [Treemap Charts](./recipes/basic_charts/treemap_charts.md)
         - [Sunburst Charts](./recipes/basic_charts/sunburst_charts.md)
+        - [Waterfall Charts](./recipes/basic_charts/waterfall_charts.md)
     - [Statistical Charts](./recipes/statistical_charts.md)
         - [Error Bars](./recipes/statistical_charts/error_bars.md)
         - [Box Plots](./recipes/statistical_charts/box_plots.md)

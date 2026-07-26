@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Add `Splom` trace type (scatter-plot matrix) with `SplomDimension`/`SplomAxis`/`SplomDiagonal` config and `showupperhalf`/`showlowerhalf` controls
 - Add `Parcats` trace type (parallel categories) with `ParcatsDimension`/`ParcatsLine` config and `ParcatsLineShape`/`ParcatsArrangement`/`ParcatsHoverOn`/`ParcatsSortPaths`/`ParcatsHoverInfo` enums
 - Add `Funnel` trace type (bar-like, cartesian) with `Connector` and `FunnelHoverInfo` options, plus the layout-level `funnelmode`/`funnelgap`/`funnelgroupgap` attributes and a `FunnelMode` enum
+- Add `Waterfall` trace type (bar-like, cartesian) with a typed `Measure` enum (`absolute`/`relative`/`total`), per-class `increasing`/`decreasing`/`totals` styling via `MeasureStyle`, a `Connector` with `ConnectorMode`, and a `WaterfallHoverInfo` enum. The layout-level `waterfallmode`/`waterfallgap`/`waterfallgroupgap` attributes and the `WaterfallMode` enum already existed
 
 ### Changed
 
