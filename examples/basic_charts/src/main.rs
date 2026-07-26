@@ -12,6 +12,7 @@ use plotly::{
         LayoutPolar, Legend, PolarAxisAttributes, PolarAxisTicks, PolarDirection, RadialAxis,
         TicksDirection, TraceOrder,
     },
+    funnel::Connector as FunnelConnector,
     sankey::{Line as SankeyLine, Link, Node},
     sunburst::{InsideTextOrientation, Leaf},
     traces::table::{
@@ -19,7 +20,7 @@ use plotly::{
     },
     treemap::{BranchValues, Marker as TreemapMarker, Packing, PathBar, Side, Tiling},
     waterfall::{Marker as WaterfallMarker, Measure, MeasureStyle},
-    Bar, Pie, Plot, Sankey, Scatter, ScatterPolar, Sunburst, Table, Treemap, Waterfall,
+    Bar, Funnel, Pie, Plot, Sankey, Scatter, ScatterPolar, Sunburst, Table, Treemap, Waterfall,
 };
 use plotly_utils::write_example_to_html;
 use rand_distr::{Distribution, Normal, Uniform};
@@ -1148,6 +1149,30 @@ fn styled_sunburst(show: bool, file_name: &str) {
 }
 // ANCHOR_END: styled_sunburst
 
+// Funnel Charts
+// ANCHOR: basic_funnel
+fn basic_funnel(show: bool, file_name: &str) {
+    // A funnel is a CONTAINMENT form: each stage is a subset of the one above it, and the band
+    // widths carry that claim. Feed the stages upstream-first -- plotly draws index 0 at the top.
+    let stages = vec!["Visits", "Signups", "Trials", "Purchases"];
+    let counts = vec![15200, 5100, 2400, 980];
+
+    let trace = Funnel::new(counts, stages)
+        .orientation(Orientation::Horizontal)
+        .text_info("value+percent previous")
+        .marker(Marker::new().color(NamedColor::SteelBlue))
+        .connector(FunnelConnector::new().visible(true));
+
+    let mut plot = Plot::new();
+    plot.add_trace(trace);
+
+    let path = write_example_to_html(&plot, file_name);
+    if show {
+        plot.show_html(path);
+    }
+}
+// ANCHOR_END: basic_funnel
+
 // Waterfall Charts
 // ANCHOR: basic_waterfall
 fn basic_waterfall(show: bool, file_name: &str) {
@@ -1353,6 +1378,9 @@ fn main() {
     // Sunburst Charts
     basic_sunburst(false, "basic_sunburst");
     styled_sunburst(false, "styled_sunburst");
+
+    // Funnel Charts
+    basic_funnel(false, "basic_funnel");
 
     // Waterfall Charts
     basic_waterfall(false, "basic_waterfall");
